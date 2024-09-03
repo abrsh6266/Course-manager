@@ -3,6 +3,8 @@ const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcryptjs");
 const User = require("../Models/User");
 const generateToken = require("../utils/generateToken");
+const Enrollment = require("../Models/Enrollment");
+const Course = require("../Models/Course");
 
 // Register a new user
 exports.registerUser = asyncHandler(async (req, res) => {
@@ -93,3 +95,33 @@ exports.updateUserProfile = asyncHandler(async (req, res) => {
     throw new Error("User not found");
   }
 });
+//enrolling user for a course
+exports.enrolling = asyncHandler(async (req, res) => {
+  if (req.user.role !== "user") {
+    return res.status(403).json({ message: "Access denied." });
+  }
+  const enrolled = Enrollment.find({
+    userId: req.user._id,
+    courseId: params.body.courseId,
+  });
+  if (enrolled) {
+    throw new Error("User already registered for this course");
+  }
+  const userEnroll = Enrollment.create({
+    userId: req.user._id,
+    courseId: params.body.courseId,
+  });
+  res.json({
+    message: "user Success Enrolled.",
+  });
+});
+//getting all courses that a user enrolled
+exports.enrolledCourses = asyncHandler(async (req, res) => {
+  if (req.user.role !== "user") {
+    return res.status(403).json({ message: "Access denied." });
+  }
+  const courses = Enrollment.find({
+    userId: req.user._id,
+  }).populate("course", "title description");
+});
+
