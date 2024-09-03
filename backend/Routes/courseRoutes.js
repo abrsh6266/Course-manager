@@ -9,7 +9,7 @@ const {
   deleteLesson,
   deleteCourse,
 } = require("../Controllers/courseController");
-const { protect } = require("../middleware/authMiddleware");
+const isLoggedIn = require("../middlewares/isLogged");
 
 const router = express.Router();
 
@@ -17,21 +17,21 @@ const router = express.Router();
 router.get("/", getCourses);
 
 // Create a new course
-router.post("/", protect, createCourse);
+router.post("/", isLoggedIn, createCourse);
 
 // Update course details
-router.put("/:id", protect, updateCourseDetails);
+router.put("/:id", isLoggedIn, updateCourseDetails);
 
 // Add a lesson to a course
-router.put("/:id/lessons", protect, addLesson);
+router.put("/:id/lessons", isLoggedIn, addLesson);
 
 // Update a lesson in a course
-router.put("/:courseId/lessons/:lessonId", protect, updateLesson);
+router.put("/:courseId/lessons/:lessonId", isLoggedIn, updateLesson);
 
 // Delete a lesson from a course
-router.delete("/:courseId/lessons/:lessonId", protect, deleteLesson);
+router.delete("/:courseId/lessons/:lessonId", isLoggedIn, deleteLesson);
 
 // Delete a course
-router.delete("/:id", protect, deleteCourse);
+router.delete("/:id", isLoggedIn, deleteCourse);
 
 module.exports = router;

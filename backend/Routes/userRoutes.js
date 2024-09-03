@@ -8,7 +8,7 @@ const {
   enrolling,
   enrolledCourses,
 } = require("../Controllers/userController");
-const { protect } = require("../middleware/authMiddleware");
+const isLoggedIn = require("../middlewares/isLogged");
 
 const router = express.Router();
 
@@ -18,16 +18,16 @@ router.post("/register", registerUser);
 // User login route
 router.post("/login", authUser);
 
-// Get user profile (protected)
-router.get("/profile", protect, getUserProfile);
+// Get user profile
+router.get("/profile", isLoggedIn, getUserProfile);
 
-// Update user profile (protected)
-router.put("/profile", protect, updateUserProfile);
+// Update user profile
+router.put("/profile", isLoggedIn, updateUserProfile);
 
-// Enroll user in a course (protected)
-router.post("/enroll", protect, enrolling);
+// Enroll user in a course
+router.post("/enroll", isLoggedIn, enrolling);
 
-// Get all enrolled courses for a user (protected)
-router.get("/enrolled-courses", protect, enrolledCourses);
+// Get all enrolled courses for a user
+router.get("/enrolled-courses", isLoggedIn, enrolledCourses);
 
 module.exports = router;
