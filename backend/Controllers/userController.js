@@ -1,6 +1,5 @@
 // controllers/userController.js
 const asyncHandler = require("express-async-handler");
-const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const User = require("../Models/User");
 const generateToken = require("../utils/generateToken");
