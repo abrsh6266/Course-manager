@@ -25,19 +25,23 @@ const Navbar = () => {
 
   // Navigation links based on roles
   const navLinks = [
-    role === "instructor" && {
-      id: 10,
-      label: "Assigned Courses",
-      href: "/assigned-courses",
-    },
-    role === "user" && { id: 2, label: "My Courses", href: "/my-courses" },
-    role === "admin" && { id: 4, label: "Admin Dashboard", href: "/" },
-    role === "admin" && {
-      id: 3,
-      label: "Manage Courses",
-      href: "/courses",
-    },
-    role === "admin" && { id: 5, label: "Manage Users", href: "/users" },
+    role &&
+      role === "instructor" && {
+        id: 10,
+        label: "Assigned Courses",
+        href: "/assigned-courses",
+      },
+    role &&
+      role === "user" && { id: 2, label: "My Courses", href: "/my-courses" },
+    role && role === "admin" && { id: 4, label: "Admin Dashboard", href: "/" },
+    role &&
+      role === "admin" && {
+        id: 3,
+        label: "Manage Courses",
+        href: "/courses",
+      },
+    role &&
+      role === "admin" && { id: 5, label: "Manage Users", href: "/users" },
   ].filter(Boolean);
 
   useEffect(() => {}, [token, username, role]);
