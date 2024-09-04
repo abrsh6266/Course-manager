@@ -2,7 +2,7 @@ const Course = require("../Models/Course");
 const asyncHandler = require("express-async-handler");
 
 //get all courses
-exports.getCourses = asyncHandler(async (res, res) => {
+exports.getCourses = asyncHandler(async (req, res) => {
   const courses = Course.find();
   res.status(200).json(courses);
 });
