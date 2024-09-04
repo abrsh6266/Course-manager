@@ -25,9 +25,14 @@ const Navbar = () => {
 
   // Navigation links based on roles
   const navLinks = [
+    role === "instructor" && {
+      id: 10,
+      label: "Assigned Courses",
+      href: "/assigned-courses",
+    },
     role === "user" && { id: 2, label: "My Courses", href: "/my-courses" },
     role === "admin" && { id: 4, label: "Admin Dashboard", href: "/" },
-    (role === "instructor" || role === "admin") && {
+    role === "admin" && {
       id: 3,
       label: "Manage Courses",
       href: "/courses",

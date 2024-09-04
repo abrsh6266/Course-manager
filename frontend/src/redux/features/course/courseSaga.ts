@@ -11,6 +11,9 @@ import {
   createCourseRequest,
   createCourseSuccess,
   createCourseFailure,
+  fetchInstructorCoursesSuccess,
+  fetchInstructorCoursesFailure,
+  fetchInstructorCoursesRequest,
 } from "./courseSlice";
 import { Course } from "../../../utils";
 import successMsg from "../../../components/Alerts/SuccessMsg";
@@ -32,7 +35,26 @@ function* handleFetchCourses() {
     );
   }
 }
-
+//hadle fetching assigned courses for instructor
+function* handleFetchInstructorCourses() {
+  try {
+    const token: string = yield select((state: any) => state.user.token);
+    const response: AxiosResponse<Course[]> = yield call(
+      axios.get,
+      "http://localhost:4000/api/courses/instructor",
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    yield put(fetchInstructorCoursesSuccess(response.data));
+  } catch (error: any) {
+    yield put(
+      fetchInstructorCoursesFailure(
+        error.response?.data?.message || "Failed to fetch courses"
+      )
+    );
+  }
+}
 // Create Course Saga
 function* handleCreateCourse(action: ReturnType<typeof createCourseRequest>) {
   try {
@@ -75,6 +97,10 @@ function* handleDeleteCourse(action: ReturnType<typeof deleteCourseRequest>) {
 }
 
 export default function* courseSaga() {
+  yield takeLatest(
+    fetchInstructorCoursesRequest.type,
+    handleFetchInstructorCourses
+  );
   yield takeLatest(fetchCoursesRequest.type, handleFetchCourses);
   yield takeLatest(deleteCourseRequest.type, handleDeleteCourse);
   yield takeLatest(createCourseRequest.type, handleCreateCourse);

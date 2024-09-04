@@ -254,7 +254,10 @@ exports.deleteQuiz = asyncHandler(async (req, res) => {
 
 // Get courses by instructor ID
 exports.getCoursesByInstructor = asyncHandler(async (req, res) => {
-  const courses = await Course.find({ instructor: req.params.instructorId });
+  if (req.user.role !== "instructor") {
+    return res.status(403).json({ message: "Access denied." });
+  }
+  const courses = await Course.find({ instructor: req.user._id });
   res.status(200).json(courses);
 });
 

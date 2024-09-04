@@ -10,6 +10,7 @@ import Overview from "./pages/dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Profile from "./pages/ProfilePage";
 import AdminUsers from "./pages/UserManagmentPage";
+import InstructorCourses from "./pages/InstructorCoursePage";
 
 function App() {
   return (
@@ -18,6 +19,22 @@ function App() {
         <div className="App">
           <Navbar />
           <Routes>
+            <Route
+              path="/assigned-courses"
+              element={
+                <ProtectedRoute>
+                  <InstructorCourses />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/instructor/courses/:courseId"
+              element={
+                <ProtectedRoute>
+                  <CourseDetails />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/profile"
               element={

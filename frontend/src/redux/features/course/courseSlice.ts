@@ -30,8 +30,22 @@ const courseSlice = createSlice({
       state.error = action.payload;
     },
 
+    fetchInstructorCoursesRequest(state) {
+      state.loading = true;
+      state.error = null;
+    },
+    fetchInstructorCoursesSuccess(state, action: PayloadAction<Course[]>) {
+      state.courses = action.payload;
+      state.loading = false;
+    },
+    fetchInstructorCoursesFailure(state, action: PayloadAction<string>) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
     // Add the delete actions
     deleteCourseRequest(state, action: PayloadAction<string>) {
+      console.log(action.payload);
       state.loading = true;
       state.error = null;
     },
@@ -54,6 +68,7 @@ const courseSlice = createSlice({
         instructor: string;
       }>
     ) {
+      console.log(action.payload);
       state.loading = true;
       state.error = null;
     },
@@ -72,6 +87,9 @@ export const {
   fetchCoursesRequest,
   fetchCoursesSuccess,
   fetchCoursesFailure,
+  fetchInstructorCoursesRequest,
+  fetchInstructorCoursesSuccess,
+  fetchInstructorCoursesFailure,
   deleteCourseRequest,
   deleteCourseSuccess,
   deleteCourseFailure,

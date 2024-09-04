@@ -21,7 +21,7 @@ const router = express.Router();
 router.get("/", getCourses);
 
 // Get courses by instructor ID
-router.get("/instructor/:instructorId", isLoggedIn, getCoursesByInstructor);
+router.get("/instructor", isLoggedIn, getCoursesByInstructor);
 
 //statistics
 router.get("/statistics", getStatistics);
