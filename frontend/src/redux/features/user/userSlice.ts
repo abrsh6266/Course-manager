@@ -103,6 +103,7 @@ const userSlice = createSlice({
       state.email = null;
       state.username = null;
       state.token = null;
+      state.role = "";
       clearUserDataFromLocalStorage();
     },
 
