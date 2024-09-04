@@ -21,6 +21,9 @@ const Login = () => {
   const [isFormValid, setIsFormValid] = useState(false); // New state to track form validity
 
   useEffect(() => {
+    location.reload();
+  }, []);
+  useEffect(() => {
     if (token) {
       navigate("/");
     }
