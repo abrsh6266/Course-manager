@@ -1,13 +1,19 @@
 const http = require("http");
 const express = require("express");
 const connectDB = require("./config/database");
+const {
+  globalErrHandler,
+  notFound,
+} = require("./middlewares/globalErrorHandler");
 const cors = require("cors");
+const userRoutes = require("./Routes/userRoutes");
+const courseRoutes = require("./Routes/courseRoutes");
 
 //server
 const app = express();
 
 //middlewares
-app.use(express.json()); //pass incoming data
+app.use(express.json());
 
 //cors middleware
 app.use(cors());
@@ -15,7 +21,9 @@ app.use(cors());
 //db connect
 connectDB();
 
-//Routes
+// Routes middleware
+app.use("/api/users", userRoutes);
+app.use("/api/courses", courseRoutes);
 
 //not found middleware(404)
 app.use(notFound);
