@@ -119,7 +119,6 @@ exports.deleteLesson = asyncHandler(async (req, res) => {
     return res.status(404).json({ message: "Course not found." });
   }
 
-  // Check if the user is an instructor and the assigned instructor for the course
   if (
     req.user.role === "instructor" &&
     course.instructor.toString() !== req.user.id

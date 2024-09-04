@@ -21,8 +21,10 @@ const AdminUsers = () => {
   const handleRoleChange = (userId: string, role: string) => {
     dispatch(updateUserRoleRequest({ id: userId, role }));
   };
+
   const role = useSelector((state: RootState) => state.user.role);
   const navigate = useNavigate();
+
   useEffect(() => {
     if (role === "instructor") {
       navigate("/assigned-courses");
@@ -30,46 +32,60 @@ const AdminUsers = () => {
     if (role === "user") {
       navigate("/my-courses");
     }
-  });
+  }, [role, navigate]);
+
   return (
     <div className="container mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6">Manage Users</h1>
+      <h1 className="text-4xl font-bold text-indigo-600 mb-8 text-center">
+        Manage Users
+      </h1>
 
       {loading && (
-        <p>
+        <div className="flex justify-center mb-4">
           <LoadingComponent />
-        </p>
+        </div>
       )}
-      {error && <p className="text-red-500">{error}</p>}
+      {error && <p className="text-red-500 text-center mb-4">{error}</p>}
 
-      <table className="table-auto text-xl w-full">
-        <thead>
-          <tr>
-            <th className="px-4 py-2">Username</th>
-            <th className="px-4 py-2">Email</th>
-            <th className="px-4 py-2">Role</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users?.map((user) => (
-            <tr key={user.id} className="text-center">
-              <td className="border px-4 py-2">{user.username}</td>
-              <td className="border px-4 py-2">{user.email}</td>
-              <td className="border px-4 py-2">
-                <select
-                  value={user.role}
-                  onChange={(e) => handleRoleChange(user.id, e.target.value)}
-                  className="form-select mt-1 block w-full"
-                >
-                  <option value="user">User</option>
-                  <option value="instructor">Instructor</option>
-                  <option value="admin">Admin</option>
-                </select>
-              </td>
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white rounded-lg shadow-md overflow-hidden">
+          <thead>
+            <tr className="bg-indigo-600 text-white text-lg">
+              <th className="px-6 py-3 text-left">Username</th>
+              <th className="px-6 py-3 text-left">Email</th>
+              <th className="px-6 py-3 text-left">Role</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {users?.map((user, index) => (
+              <tr
+                key={user.id}
+                className={`${
+                  index % 2 === 0 ? "bg-gray-50" : "bg-white"
+                } hover:bg-gray-100`}
+              >
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                  {user.username}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                  {user.email}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                  <select
+                    value={user.role}
+                    onChange={(e) => handleRoleChange(user.id, e.target.value)}
+                    className="block w-full mt-1 bg-gray-50 border border-gray-300 text-gray-700 py-2 px-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  >
+                    <option value="user">User</option>
+                    <option value="instructor">Instructor</option>
+                    <option value="admin">Admin</option>
+                  </select>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

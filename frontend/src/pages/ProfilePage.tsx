@@ -47,18 +47,25 @@ const Profile = () => {
       })
     );
   };
+
   return (
-    <div className="container mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6">My Profile</h1>
+    <div className="container mx-auto p-6 max-w-xl">
+      <h1 className="text-4xl font-bold text-center mb-8 text-indigo-600">
+        My Profile
+      </h1>
 
       {loading && (
-        <p>
+        <div className="flex justify-center mb-4">
           <LoadingComponent />
-        </p>
+        </div>
       )}
-      {error && <p className="text-red-500">{error}</p>}
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white p-6 rounded-lg shadow-md space-y-6"
+      >
         <FormInput
           type="text"
           label="Username"
@@ -80,7 +87,7 @@ const Profile = () => {
           handleChange={handleChange}
           defaultValue={formData.password}
         />
-        <div className="mt-6 max-w-32">
+        <div className="flex justify-end">
           <SubmitBtn text="Update Profile" disabled={loading} />
         </div>
       </form>
