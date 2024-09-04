@@ -125,3 +125,65 @@ exports.enrolledCourses = asyncHandler(async (req, res) => {
   }).populate("course", "title description");
 });
 
+// Taking a quiz
+exports.takeQuiz = asyncHandler(async (req, res) => {
+  if (req.user.role !== "user") {
+    return res.status(403).json({ message: "Access denied." });
+  }
+  const { courseId, lessonId, answers } = req.body;
+
+  const course = await Course.findById(courseId);
+  if (!course) {
+    return res.status(404).json({ message: "Course not found." });
+  }
+
+  const lesson = course.lessons.id(lessonId);
+  if (!lesson) {
+    return res.status(404).json({ message: "Lesson not found." });
+  }
+
+  let score = 0;
+
+  // Calculate the score
+  lesson.quiz.questions.forEach((question, index) => {
+    if (
+      question.options.some(
+        (option) => option.isCorrect && option.optionText === answers[index]
+      )
+    ) {
+      score += 1;
+    }
+  });
+
+  // Generate feedback
+  const feedback =
+    score === lesson.quiz.questions.length
+      ? "Excellent! You got all answers correct."
+      : `You scored ${score} out of ${lesson.quiz.questions.length}. Keep practicing!`;
+
+  // Save the quiz result
+  const quizResult = await QuizResult.create({
+    userId: req.user._id,
+    courseId: courseId,
+    lessonId: lessonId,
+    score: score,
+    feedback: feedback,
+  });
+
+  res.json({
+    message: "Quiz completed.",
+    quizResult,
+  });
+});
+
+// Getting quiz results for a user
+exports.getQuizResults = asyncHandler(async (req, res) => {
+  if (req.user.role !== "user") {
+    return res.status(403).json({ message: "Access denied." });
+  }
+  const quizResults = await QuizResult.find({ userId: req.user._id })
+    .populate("courseId", "title")
+    .populate("lessonId", "title");
+
+  res.json(quizResults);
+});

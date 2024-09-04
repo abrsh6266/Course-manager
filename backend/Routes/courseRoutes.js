@@ -10,6 +10,7 @@ const {
   deleteQuiz,
   updateQuiz,
   createQuiz,
+  getCoursesByInstructor,
 } = require("../Controllers/courseController");
 const isLoggedIn = require("../middlewares/isLogged");
 

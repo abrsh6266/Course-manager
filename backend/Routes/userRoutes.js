@@ -6,6 +6,8 @@ const {
   updateUserProfile,
   enrolling,
   enrolledCourses,
+  takeQuiz,
+  getQuizResults,
 } = require("../Controllers/userController");
 const isLoggedIn = require("../middlewares/isLogged");
 
@@ -29,4 +31,9 @@ router.post("/enroll", isLoggedIn, enrolling);
 // Get all enrolled courses for a user
 router.get("/enrolled-courses", isLoggedIn, enrolledCourses);
 
+// Take a quiz
+router.post("/quiz", isLoggedIn, takeQuiz);
+
+// Get all quiz results for a user
+router.get("/quiz-results", isLoggedIn, getQuizResults);
 module.exports = router;
