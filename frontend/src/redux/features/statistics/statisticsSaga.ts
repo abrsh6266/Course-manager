@@ -10,7 +10,7 @@ function* handleFetchStatistics() {
   try {
     const response: AxiosResponse<any> = yield call(
       axios.get,
-      "http://localhost:4000/api/courses/statistics"
+      "https://courses-api-ruby.vercel.app/api/courses/statistics"
     );
     yield put(fetchStatisticsSuccess(response.data));
   } catch (error: any) {

@@ -35,7 +35,7 @@ function* handleFetchCourses() {
   try {
     const response: AxiosResponse<Course[]> = yield call(
       axios.get,
-      "http://localhost:4000/api/courses"
+      "https://courses-api-ruby.vercel.app/api/courses"
     );
     yield put(fetchCoursesSuccess(response.data));
   } catch (error: any) {
@@ -53,7 +53,7 @@ function* handleFetchInstructorCourses() {
     const token: string = yield select((state: any) => state.user.token);
     const response: AxiosResponse<Course[]> = yield call(
       axios.get,
-      "http://localhost:4000/api/courses/instructor",
+      "https://courses-api-ruby.vercel.app/api/courses/instructor",
       {
         headers: { Authorization: `Bearer ${token}` },
       }
@@ -75,7 +75,7 @@ function* handleCreateCourse(action: ReturnType<typeof createCourseRequest>) {
     const { title, description, instructor } = action.payload;
     const response: AxiosResponse<Course> = yield call(
       axios.post,
-      "http://localhost:4000/api/courses",
+      "https://courses-api-ruby.vercel.app/api/courses",
       { title, description, instructor },
       {
         headers: { Authorization: `Bearer ${token}` },
@@ -98,7 +98,7 @@ function* handleCreateCourse(action: ReturnType<typeof createCourseRequest>) {
 function* handleDeleteCourse(action: ReturnType<typeof deleteCourseRequest>) {
   try {
     const courseId = action.payload;
-    yield call(axios.delete, `http://localhost:4000/api/courses/${courseId}`);
+    yield call(axios.delete, `https://courses-api-ruby.vercel.app/api/courses/${courseId}`);
     yield put(deleteCourseSuccess(courseId));
   } catch (error: any) {
     yield put(
@@ -116,7 +116,7 @@ function* handleAddLesson(action: ReturnType<typeof addLessonRequest>) {
     const { courseId, lessonData } = action.payload;
     const response: AxiosResponse<Lesson> = yield call(
       axios.put,
-      `http://localhost:4000/api/courses/${courseId}/lessons`,
+      `https://courses-api-ruby.vercel.app/api/courses/${courseId}/lessons`,
       lessonData,
       {
         headers: { Authorization: `Bearer ${token}` },
@@ -140,7 +140,7 @@ function* handleAddQuiz(action: ReturnType<typeof addQuizRequest>) {
     const { courseId, lessonId, questions } = action.payload;
     const response: AxiosResponse<Lesson> = yield call(
       axios.post,
-      `http://localhost:4000/api/courses/${courseId}/lessons/${lessonId}/quiz`,
+      `https://courses-api-ruby.vercel.app/api/courses/${courseId}/lessons/${lessonId}/quiz`,
       { questions },
       {
         headers: { Authorization: `Bearer ${token}` },
@@ -164,7 +164,7 @@ function* handleUpdateQuiz(action: ReturnType<typeof updateQuizRequest>) {
     const { courseId, lessonId, questions } = action.payload;
     const response: AxiosResponse<Lesson> = yield call(
       axios.put,
-      `http://localhost:4000/api/courses/${courseId}/lessons/${lessonId}/quiz`,
+      `https://courses-api-ruby.vercel.app/api/courses/${courseId}/lessons/${lessonId}/quiz`,
       { questions },
       {
         headers: { Authorization: `Bearer ${token}` },
@@ -190,7 +190,7 @@ function* handleDeleteQuiz(action: ReturnType<typeof deleteQuizRequest>) {
     const { courseId, lessonId } = action.payload;
     const response: AxiosResponse<Lesson> = yield call(
       axios.delete,
-      `http://localhost:4000/api/courses/${courseId}/lessons/${lessonId}/quiz`,
+      `https://courses-api-ruby.vercel.app/api/courses/${courseId}/lessons/${lessonId}/quiz`,
       {
         headers: { Authorization: `Bearer ${token}` },
       }
