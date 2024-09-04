@@ -1,5 +1,6 @@
 export const saveUserDataToLocalStorage = (data: {
   id: string;
+  role:string;
   email: string;
   username: string;
   token: string;

@@ -26,6 +26,7 @@ interface LoginResponse {
   email: string;
   username: string;
   token: string;
+  role: string;
 }
 
 interface RegisterResponse {
@@ -38,9 +39,10 @@ function* handleLogin(action: ReturnType<typeof loginRequest>) {
   try {
     const response: AxiosResponse<LoginResponse> = yield call(
       axios.post,
-      "https://music-app-api-cyan.vercel.app/api/v1/users/login",
+      "http://localhost:4000/api/users/login",
       action.payload
     );
+    console.log(response.data);
     successMsg("User successfully logged in");
     yield put(loginSuccess(response.data));
   } catch (error: any) {
@@ -53,7 +55,7 @@ function* handleRegister(action: ReturnType<typeof registerRequest>) {
   try {
     const response: AxiosResponse<RegisterResponse> = yield call(
       axios.post,
-      "https://music-app-api-cyan.vercel.app/api/v1/users/register",
+      "http://localhost:4000/api/users/register",
       action.payload
     );
     successMsg("User successfully registered");
@@ -71,7 +73,7 @@ function* handleFetchProfile() {
     const token: string = yield select((state: any) => state.user.token);
     const response: AxiosResponse<LoginResponse> = yield call(
       axios.get,
-      "https://music-app-api-cyan.vercel.app/api/v1/users/profile",
+      "http://localhost:4000/api/users/profile",
       {
         headers: { Authorization: `Bearer ${token}` },
       }
@@ -98,7 +100,7 @@ function* handleUpdateProfile(action: ReturnType<typeof updateProfileRequest>) {
     const token: string = yield select((state: any) => state.user.token);
     const response: AxiosResponse<LoginResponse> = yield call(
       axios.put,
-      "https://music-app-api-cyan.vercel.app/api/v1/users/profile",
+      "http://localhost:4000/api/users/profile",
       action.payload,
       {
         headers: { Authorization: `Bearer ${token}` },
@@ -119,7 +121,7 @@ function* handleUpdateProfile(action: ReturnType<typeof updateProfileRequest>) {
 function* handleDeleteProfile() {
   try {
     const token: string = yield select((state: any) => state.user.token);
-    yield call(axios.delete, "https://music-app-api-cyan.vercel.app/api/v1/users/profile", {
+    yield call(axios.delete, "http://localhost:4000/api/users/profile", {
       headers: { Authorization: `Bearer ${token}` },
     });
     successMsg("Profile successfully deleted");

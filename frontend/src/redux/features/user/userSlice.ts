@@ -8,6 +8,7 @@ import {
 interface UserState {
   id: string | null;
   email: string | null;
+  role: string;
   username: string | null;
   token: string | null;
   loading: boolean;
@@ -41,12 +42,14 @@ const userSlice = createSlice({
       action: PayloadAction<{
         email: string;
         username: string;
+        role: string;
         token: string;
         id: string;
       }>
     ) {
       state.id = action.payload.id;
       state.loading = false;
+      state.role = action.payload.role
       state.email = action.payload.email;
       state.username = action.payload.username;
       state.token = action.payload.token;
@@ -135,6 +138,7 @@ const userSlice = createSlice({
         token: state.token || "",
         email: state.email,
         username: state.username,
+        role: state.role,
       });
     },
     updateProfileFailure(state, action: PayloadAction<string>) {
