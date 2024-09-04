@@ -17,6 +17,9 @@ import {
   deleteProfileSuccess,
   deleteProfileFailure,
   logout,
+  fetchInstructorsSuccess,
+  fetchInstructorsFailure,
+  fetchInstructorsRequest,
 } from "./userSlice";
 import successMsg from "../../../components/Alerts/SuccessMsg";
 import errorMsg from "../../../components/Alerts/ErrorMsg";
@@ -33,6 +36,29 @@ interface RegisterResponse {
   email: string;
   username: string;
   token: string;
+}
+interface User {
+  id: string;
+  email: string;
+  username: string;
+  role: string;
+}
+
+function* handleFetchInstructors() {
+  try {
+    const response: AxiosResponse<User[]> = yield call(
+      axios.get,
+      "http://localhost:4000/api/users/instructors"
+    );
+    console.log(response.data);
+    yield put(fetchInstructorsSuccess(response.data));
+  } catch (error: any) {
+    yield put(
+      fetchInstructorsFailure(
+        error.response?.data?.message || "Failed to fetch instructors"
+      )
+    );
+  }
 }
 
 function* handleLogin(action: ReturnType<typeof loginRequest>) {
@@ -143,4 +169,5 @@ export default function* userSaga() {
   yield takeLatest(fetchProfileRequest.type, handleFetchProfile);
   yield takeLatest(updateProfileRequest.type, handleUpdateProfile);
   yield takeLatest(deleteProfileRequest.type, handleDeleteProfile);
+  yield takeLatest(fetchInstructorsRequest.type, handleFetchInstructors); // Add this line
 }

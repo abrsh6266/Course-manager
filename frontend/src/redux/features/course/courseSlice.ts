@@ -3,16 +3,12 @@ import { Course } from "../../../utils";
 
 interface CourseState {
   courses: Course[];
-  currentPage: number;
-  totalPages: number;
   loading: boolean;
   error: string | null;
 }
 
 const initialState: CourseState = {
   courses: [],
-  currentPage: 1,
-  totalPages: 1,
   loading: false,
   error: null,
 };
@@ -21,28 +17,54 @@ const courseSlice = createSlice({
   name: "course",
   initialState,
   reducers: {
-    fetchCoursesRequest(state, action: PayloadAction<{ page?: number }>) {
+    fetchCoursesRequest(state) {
       state.loading = true;
       state.error = null;
     },
-    fetchCoursesSuccess(
-      state,
-      action: PayloadAction<{
-        courses: Course[];
-        currentPage: number;
-        totalPages: number;
-      }>
-    ) {
-      state.courses = action.payload.courses;
-      state.currentPage = action.payload.currentPage;
-      state.totalPages = action.payload.totalPages;
+    fetchCoursesSuccess(state, action: PayloadAction<Course[]>) {
+      state.courses = action.payload;
       state.loading = false;
     },
     fetchCoursesFailure(state, action: PayloadAction<string>) {
       state.loading = false;
       state.error = action.payload;
     },
-    // Additional actions for create/update/delete courses
+
+    // Add the delete actions
+    deleteCourseRequest(state, action: PayloadAction<string>) {
+      state.loading = true;
+      state.error = null;
+    },
+    deleteCourseSuccess(state, action: PayloadAction<string>) {
+      state.courses = state.courses.filter(
+        (course) => course._id !== action.payload
+      );
+      state.loading = false;
+    },
+    deleteCourseFailure(state, action: PayloadAction<string>) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    // Add the create course actions
+    createCourseRequest(
+      state,
+      action: PayloadAction<{
+        title: string;
+        description: string;
+        instructor: string;
+      }>
+    ) {
+      state.loading = true;
+      state.error = null;
+    },
+    createCourseSuccess(state, action: PayloadAction<Course>) {
+      state.courses.push(action.payload);
+      state.loading = false;
+    },
+    createCourseFailure(state, action: PayloadAction<string>) {
+      state.loading = false;
+      state.error = action.payload;
+    },
   },
 });
 
@@ -50,6 +72,12 @@ export const {
   fetchCoursesRequest,
   fetchCoursesSuccess,
   fetchCoursesFailure,
+  deleteCourseRequest,
+  deleteCourseSuccess,
+  deleteCourseFailure,
+  createCourseRequest,
+  createCourseSuccess,
+  createCourseFailure,
 } = courseSlice.actions;
 
 export default courseSlice.reducer;

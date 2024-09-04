@@ -11,6 +11,7 @@ const {
   updateQuiz,
   createQuiz,
   getCoursesByInstructor,
+  getStatistics,
 } = require("../Controllers/courseController");
 const isLoggedIn = require("../middlewares/isLogged");
 
@@ -21,6 +22,9 @@ router.get("/", getCourses);
 
 // Get courses by instructor ID
 router.get("/instructor/:instructorId", isLoggedIn, getCoursesByInstructor);
+
+//statistics
+router.get('/statistics', isLoggedIn, getStatistics);
 
 // Create a new course
 router.post("/", isLoggedIn, createCourse);

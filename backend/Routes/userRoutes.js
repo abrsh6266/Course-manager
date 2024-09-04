@@ -8,6 +8,7 @@ const {
   enrolledCourses,
   takeQuiz,
   getQuizResults,
+  fetchInstructors,
 } = require("../Controllers/userController");
 const isLoggedIn = require("../middlewares/isLogged");
 
@@ -19,8 +20,12 @@ router.post("/register", registerUser);
 // User login route
 router.post("/login", authUser);
 
+//fetch instructors
+router.get("/instructors", fetchInstructors);
+
 // Get user profile
 router.get("/profile", isLoggedIn, getUserProfile);
+
 
 // Update user profile
 router.put("/profile", isLoggedIn, updateUserProfile);

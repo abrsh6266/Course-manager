@@ -26,7 +26,15 @@ const quizResultSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    toJSON: {
+      virtuals: true,
+    },
+    toObject: {
+      virtuals: true,
+    },
+  }
 );
 
 const QuizResult = mongoose.model("QuizResult", quizResultSchema);

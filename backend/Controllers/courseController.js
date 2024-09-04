@@ -1,9 +1,11 @@
 const Course = require("../Models/Course");
 const asyncHandler = require("express-async-handler");
+const User = require("../Models/User");
+const Enrollment = require("../Models/Enrollment");
 
 //get all courses
 exports.getCourses = asyncHandler(async (req, res) => {
-  const courses = Course.find();
+  const courses = await Course.find({});
   res.status(200).json(courses);
 });
 // Create a new course
@@ -254,4 +256,36 @@ exports.deleteQuiz = asyncHandler(async (req, res) => {
 exports.getCoursesByInstructor = asyncHandler(async (req, res) => {
   const courses = await Course.find({ instructor: req.params.instructorId });
   res.status(200).json(courses);
+});
+
+// Get statistics for the admin dashboard
+exports.getStatistics = asyncHandler(async (req, res) => {
+  // Count total users
+  const totalUsers = await User.countDocuments();
+
+  // Count total courses
+  const totalCourses = await Course.countDocuments();
+
+  // Count total enrollments
+  const totalEnrollments = await Enrollment.countDocuments();
+
+  // Fetch recent activities (e.g., recent enrollments)
+  const recentActivity = await Enrollment.find()
+    .sort({ enrolledAt: -1 })
+    .limit(10)
+    .populate("userId", "username")
+    .populate("courseId", "title")
+    .exec();
+
+  const formattedActivity = recentActivity.map((activity) => ({
+    description: `${activity.userId.username} enrolled in ${activity.courseId.title}`,
+    timestamp: activity.enrolledAt,
+  }));
+
+  res.status(200).json({
+    totalUsers,
+    totalCourses,
+    totalEnrollments,
+    recentActivity: formattedActivity,
+  });
 });

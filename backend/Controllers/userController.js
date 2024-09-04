@@ -6,6 +6,13 @@ const generateToken = require("../utils/generateToken");
 const Enrollment = require("../Models/Enrollment");
 const Course = require("../Models/Course");
 
+// fetch instructors
+exports.fetchInstructors = asyncHandler(async (req, res) => {
+  const instructors = await User.find({
+    role: "instructor",
+  });
+  res.json(instructors);
+});
 // Register a new user
 exports.registerUser = asyncHandler(async (req, res) => {
   const { username, email, password } = req.body;

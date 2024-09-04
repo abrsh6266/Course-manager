@@ -5,6 +5,13 @@ import {
   clearUserDataFromLocalStorage,
 } from "../../../utils/localStorage";
 
+interface User {
+  id: string;
+  email: string;
+  username: string;
+  role: string;
+}
+
 interface UserState {
   id: string | null;
   email: string | null;
@@ -13,15 +20,18 @@ interface UserState {
   token: string | null;
   loading: boolean;
   error: string | null;
+  instructors: User[];
 }
 
 const initialState: UserState = getUserDataFromLocalStorage() || {
   id: null,
   email: null,
+  role: "",
   username: null,
   token: null,
   loading: false,
   error: null,
+  instructors: [],
 };
 
 const userSlice = createSlice({
@@ -49,7 +59,7 @@ const userSlice = createSlice({
     ) {
       state.id = action.payload.id;
       state.loading = false;
-      state.role = action.payload.role
+      state.role = action.payload.role;
       state.email = action.payload.email;
       state.username = action.payload.username;
       state.token = action.payload.token;
@@ -163,10 +173,25 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    fetchInstructorsRequest(state) {
+      state.loading = true;
+      state.error = null;
+    },
+    fetchInstructorsSuccess(state, action: PayloadAction<User[]>) {
+      state.loading = false;
+      state.instructors = action.payload;
+    },
+    fetchInstructorsFailure(state, action: PayloadAction<string>) {
+      state.loading = false;
+      state.error = action.payload;
+    },
   },
 });
 
 export const {
+  fetchInstructorsRequest,
+  fetchInstructorsSuccess,
+  fetchInstructorsFailure,
   loginRequest,
   loginSuccess,
   loginFailure,

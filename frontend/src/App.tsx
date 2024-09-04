@@ -4,6 +4,8 @@ import store from "./redux/store";
 import Login from "./pages/LoginPage";
 import Register from "./pages/RegisterPage";
 import Navbar from "./components/Navbar";
+import AdminCourses from "./pages/Home";
+import CreateCourse from "./components/CreateCourse";
 
 function App() {
   return (
@@ -12,6 +14,8 @@ function App() {
         <div className="App">
           <Navbar />
           <Routes>
+            <Route element={<AdminCourses />} path="/" />
+            <Route element={<CreateCourse />} path="/create-course" />
             <Route element={<Login />} path="/login" />
             <Route element={<Register />} path="/register" />
           </Routes>
