@@ -46,8 +46,8 @@ const ManageQuiz = () => {
       })
     );
   };
+  
   const navigate = useNavigate();
-
   useEffect(() => {
     if (!lesson) {
       navigate("/assigned-courses");

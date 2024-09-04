@@ -6,6 +6,7 @@ import {
   updateUserRoleRequest,
 } from "../redux/features/user/userSlice";
 import LoadingComponent from "../components/Alerts/LoadingComponent";
+import { useNavigate } from "react-router-dom";
 
 const AdminUsers = () => {
   const dispatch = useDispatch();
@@ -20,6 +21,16 @@ const AdminUsers = () => {
   const handleRoleChange = (userId: string, role: string) => {
     dispatch(updateUserRoleRequest({ id: userId, role }));
   };
+  const role = useSelector((state: RootState) => state.user.role);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (role === "instructor") {
+      navigate("/assigned-courses");
+    }
+    if (role === "user") {
+      navigate("/my-courses");
+    }
+  });
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6">Manage Users</h1>

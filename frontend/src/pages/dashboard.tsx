@@ -14,6 +14,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { useNavigate } from "react-router-dom";
 
 // Register the components for Chart.js
 ChartJS.register(
@@ -35,7 +36,6 @@ const Overview = () => {
     dispatch(fetchStatisticsRequest());
   }, [dispatch]);
 
-  // Sample data for the chart (you should replace this with real data)
   const data = {
     labels: recentActivity.map((activity) =>
       new Date(activity.timestamp).toLocaleDateString()
@@ -63,6 +63,16 @@ const Overview = () => {
       },
     },
   };
+  const role = useSelector((state: RootState) => state.user.role);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (role === "instructor") {
+      navigate("/assigned-courses");
+    }
+    if (role === "user") {
+      navigate("/my-courses");
+    }
+  });
 
   return (
     <div className="container mx-auto p-6">

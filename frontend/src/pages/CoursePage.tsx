@@ -6,7 +6,7 @@ import {
   deleteCourseRequest,
 } from "../redux/features/course/courseSlice";
 import LoadingComponent from "../components/Alerts/LoadingComponent";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const AdminCourses = () => {
   const dispatch = useDispatch();
@@ -21,7 +21,16 @@ const AdminCourses = () => {
   const handleDelete = (courseId: string) => {
     dispatch(deleteCourseRequest(courseId));
   };
-
+  const role = useSelector((state: RootState) => state.user.role);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (role === "instructor") {
+      navigate("/assigned-courses");
+    }
+    if (role === "user") {
+      navigate("/my-courses");
+    }
+  });
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <h1 className="text-4xl font-bold text-center mb-8">Manage Courses</h1>

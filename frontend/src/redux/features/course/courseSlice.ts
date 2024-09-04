@@ -105,6 +105,9 @@ const courseSlice = createSlice({
     addQuizSuccess(state, action: PayloadAction<Lesson>) {
       state.lesson = action.payload;
       state.loading = false;
+      setTimeout(() => {
+        location.reload();
+      }, 3000);
     },
     addQuizFailure(state, action: PayloadAction<string>) {
       state.loading = false;
@@ -127,6 +130,9 @@ const courseSlice = createSlice({
     updateQuizSuccess(state, action: PayloadAction<Lesson>) {
       state.lesson = action.payload;
       state.loading = false;
+      setTimeout(() => {
+        location.reload();
+      }, 3000);
     },
     updateQuizFailure(state, action: PayloadAction<string>) {
       state.loading = false;
@@ -148,6 +154,9 @@ const courseSlice = createSlice({
     deleteQuizSuccess(state, action: PayloadAction<Lesson>) {
       state.lesson = action.payload;
       state.loading = false;
+      setTimeout(() => {
+        location.reload();
+      }, 3000);
     },
     deleteQuizFailure(state, action: PayloadAction<string>) {
       state.loading = false;
