@@ -18,8 +18,36 @@ const courseSchema = new mongoose.Schema(
     },
     lessons: [
       {
-        title: String,
-        content: String,
+        title: {
+          type: String,
+          required: true,
+        },
+        content: {
+          type: String,
+          required: true,
+        },
+        quiz: {
+          questions: [
+            {
+              questionText: {
+                type: String,
+                required: true,
+              },
+              options: [
+                {
+                  optionText: {
+                    type: String,
+                    required: true,
+                  },
+                  isCorrect: {
+                    type: Boolean,
+                    default: false,
+                  },
+                },
+              ],
+            },
+          ],
+        },
       },
     ],
   },

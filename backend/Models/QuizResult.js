@@ -7,9 +7,14 @@ const quizResultSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    quizId: {
+    courseId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Quiz",
+      ref: "Course",
+      required: true,
+    },
+    lessonId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Lesson",
       required: true,
     },
     score: {
@@ -18,7 +23,7 @@ const quizResultSchema = new mongoose.Schema(
     },
     feedback: {
       type: String,
-      required: false,
+      required: true,
     },
   },
   { timestamps: true }

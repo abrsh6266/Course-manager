@@ -154,3 +154,104 @@ exports.deleteCourse = asyncHandler(async (req, res) => {
   await course.remove();
   res.status(200).json({ message: "Course deleted successfully." });
 });
+
+// Create a quiz for a specific lesson
+exports.createQuiz = asyncHandler(async (req, res) => {
+  if (req.user.role !== "instructor") {
+    return res.status(403).json({ message: "Access denied." });
+  }
+  const { courseId, lessonId } = req.params;
+  const { questions } = req.body;
+
+  const course = await Course.findById(courseId);
+
+  if (!course) {
+    return res.status(404).json({ message: "Course not found." });
+  }
+
+  if (course.instructor.toString() !== req.user.id) {
+    return res
+      .status(403)
+      .json({ message: "You can only create quizzes in your own courses." });
+  }
+
+  const lesson = course.lessons.id(lessonId);
+
+  if (!lesson) {
+    return res.status(404).json({ message: "Lesson not found." });
+  }
+
+  lesson.quiz = { questions };
+
+  await course.save();
+  res.status(200).json(course);
+});
+
+// Update a quiz for a specific lesson
+exports.updateQuiz = asyncHandler(async (req, res) => {
+  if (req.user.role !== "instructor") {
+    return res.status(403).json({ message: "Access denied." });
+  }
+  const { courseId, lessonId } = req.params;
+  const { questions } = req.body;
+
+  const course = await Course.findById(courseId);
+
+  if (!course) {
+    return res.status(404).json({ message: "Course not found." });
+  }
+
+  if (course.instructor.toString() !== req.user.id) {
+    return res
+      .status(403)
+      .json({ message: "You can only update quizzes in your own courses." });
+  }
+
+  const lesson = course.lessons.id(lessonId);
+
+  if (!lesson) {
+    return res.status(404).json({ message: "Lesson not found." });
+  }
+
+  lesson.quiz.questions = questions;
+
+  await course.save();
+  res.status(200).json(course);
+});
+
+// Delete a quiz for a specific lesson
+exports.deleteQuiz = asyncHandler(async (req, res) => {
+  if (req.user.role !== "instructor") {
+    return res.status(403).json({ message: "Access denied." });
+  }
+  const { courseId, lessonId } = req.params;
+
+  const course = await Course.findById(courseId);
+
+  if (!course) {
+    return res.status(404).json({ message: "Course not found." });
+  }
+
+  if (course.instructor.toString() !== req.user.id) {
+    return res
+      .status(403)
+      .json({ message: "You can only delete quizzes in your own courses." });
+  }
+
+  const lesson = course.lessons.id(lessonId);
+
+  if (!lesson) {
+    return res.status(404).json({ message: "Lesson not found." });
+  }
+
+  lesson.quiz = undefined;
+
+  await course.save();
+  res.status(200).json(course);
+});
+
+// Get courses by instructor ID
+exports.getCoursesByInstructor = asyncHandler(async (req, res) => {
+  const courses = await Course.find({ instructor: req.params.instructorId });
+  res.status(200).json(courses);
+});

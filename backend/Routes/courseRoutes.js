@@ -1,4 +1,3 @@
-// routes/courseRoutes.js
 const express = require("express");
 const {
   getCourses,
@@ -8,6 +7,9 @@ const {
   updateLesson,
   deleteLesson,
   deleteCourse,
+  deleteQuiz,
+  updateQuiz,
+  createQuiz,
 } = require("../Controllers/courseController");
 const isLoggedIn = require("../middlewares/isLogged");
 
@@ -15,6 +17,9 @@ const router = express.Router();
 
 // Get all courses
 router.get("/", getCourses);
+
+// Get courses by instructor ID
+router.get("/instructor/:instructorId", isLoggedIn, getCoursesByInstructor);
 
 // Create a new course
 router.post("/", isLoggedIn, createCourse);
@@ -33,5 +38,14 @@ router.delete("/:courseId/lessons/:lessonId", isLoggedIn, deleteLesson);
 
 // Delete a course
 router.delete("/:id", isLoggedIn, deleteCourse);
+
+// Create a quiz for a specific lesson
+router.post("/:courseId/lessons/:lessonId/quiz", isLoggedIn, createQuiz);
+
+// Update a quiz for a specific lesson
+router.put("/:courseId/lessons/:lessonId/quiz", isLoggedIn, updateQuiz);
+
+// Delete a quiz for a specific lesson
+router.delete("/:courseId/lessons/:lessonId/quiz", isLoggedIn, deleteQuiz);
 
 module.exports = router;
