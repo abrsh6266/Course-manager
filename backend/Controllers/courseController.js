@@ -61,7 +61,6 @@ exports.addLesson = asyncHandler(async (req, res) => {
     return res.status(404).json({ message: "Course not found." });
   }
 
-  // Check if the instructor is the assigned instructor for the course
   if (course.instructor.toString() !== req.user.id) {
     return res
       .status(403)

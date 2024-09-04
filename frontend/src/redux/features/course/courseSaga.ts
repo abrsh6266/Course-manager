@@ -14,8 +14,11 @@ import {
   fetchInstructorCoursesSuccess,
   fetchInstructorCoursesFailure,
   fetchInstructorCoursesRequest,
+  addLessonSuccess,
+  addLessonFailure,
+  addLessonRequest,
 } from "./courseSlice";
-import { Course } from "../../../utils";
+import { Course, Lesson } from "../../../utils";
 import successMsg from "../../../components/Alerts/SuccessMsg";
 import errorMsg from "../../../components/Alerts/ErrorMsg";
 
@@ -95,7 +98,29 @@ function* handleDeleteCourse(action: ReturnType<typeof deleteCourseRequest>) {
     );
   }
 }
+// Add Lesson Saga
+function* handleAddLesson(action: ReturnType<typeof addLessonRequest>) {
+  try {
+    const token: string = yield select((state: any) => state.user.token);
+    const { courseId, lessonData } = action.payload;
+    const response: AxiosResponse<Lesson> = yield call(
+      axios.put,
+      `http://localhost:4000/api/courses/${courseId}/lessons`,
+      lessonData,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    successMsg("Lesson successfully added");
 
+    yield put(addLessonSuccess(response.data));
+  } catch (error: any) {
+    errorMsg(error.response?.data?.message || "Failed to add lesson");
+    yield put(
+      addLessonFailure(error.response?.data?.message || "Failed to add lesson")
+    );
+  }
+}
 export default function* courseSaga() {
   yield takeLatest(
     fetchInstructorCoursesRequest.type,
@@ -104,4 +129,5 @@ export default function* courseSaga() {
   yield takeLatest(fetchCoursesRequest.type, handleFetchCourses);
   yield takeLatest(deleteCourseRequest.type, handleDeleteCourse);
   yield takeLatest(createCourseRequest.type, handleCreateCourse);
+  yield takeLatest(addLessonRequest.type, handleAddLesson);
 }

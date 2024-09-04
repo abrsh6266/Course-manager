@@ -11,6 +11,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Profile from "./pages/ProfilePage";
 import AdminUsers from "./pages/UserManagmentPage";
 import InstructorCourses from "./pages/InstructorCoursePage";
+import CourseDetails from "./pages/CourseDetails";
 
 function App() {
   return (
@@ -31,7 +32,7 @@ function App() {
               path="/instructor/courses/:courseId"
               element={
                 <ProtectedRoute>
-                  <CourseDetails />
+                  <CourseDetails/>
                 </ProtectedRoute>
               }
             />

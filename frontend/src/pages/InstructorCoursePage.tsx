@@ -2,7 +2,11 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { RootState } from "../redux/store";
-import { fetchInstructorCoursesRequest } from "../redux/features/course/courseSlice";
+import {
+  fetchInstructorCoursesRequest,
+  getCourseDetail,
+} from "../redux/features/course/courseSlice";
+import LoadingComponent from "../components/Alerts/LoadingComponent";
 
 const InstructorCourses = () => {
   const dispatch = useDispatch();
@@ -15,8 +19,12 @@ const InstructorCourses = () => {
 
   return (
     <div className="container mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6">My Courses</h1>
-      {loading && <p>Loading...</p>}
+      <h1 className="text-3xl font-bold mb-6">Assigned Courses</h1>
+      {loading && (
+        <p>
+          <LoadingComponent />
+        </p>
+      )}
       {error && <p>{error}</p>}
       <ul className="space-y-4">
         {courses.map((course) => (
@@ -24,6 +32,9 @@ const InstructorCourses = () => {
             <h2 className="text-2xl font-bold">{course.title}</h2>
             <p className="text-gray-700">{course.description}</p>
             <Link
+              onClick={() => {
+                dispatch(getCourseDetail(course));
+              }}
               to={`/instructor/courses/${course._id}`}
               className="text-blue-500 hover:underline mt-2 inline-block"
             >

@@ -1,22 +1,28 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Course } from "../../../utils";
+import { Course, Lesson } from "../../../utils";
 
 interface CourseState {
   courses: Course[];
   loading: boolean;
   error: string | null;
+  course: Course | null;
 }
 
 const initialState: CourseState = {
   courses: [],
   loading: false,
   error: null,
+  course: null,
 };
 
 const courseSlice = createSlice({
   name: "course",
   initialState,
   reducers: {
+    getCourseDetail(state, action: PayloadAction<Course>) {
+      state.course = action.payload;
+      state.loading = false;
+    },
     fetchCoursesRequest(state) {
       state.loading = true;
       state.error = null;
@@ -59,6 +65,25 @@ const courseSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+
+    // Add the create course actions
+    addLessonRequest(
+      state,
+      action: PayloadAction<{ courseId: string; lessonData: Lesson }>
+    ) {
+      console.log(action.payload);
+      state.loading = true;
+      state.error = null;
+    },
+    addLessonSuccess(state, action: PayloadAction<Lesson>) {
+      state.course?.lessons.push(action.payload);
+      state.loading = false;
+    },
+    addLessonFailure(state, action: PayloadAction<string>) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
     // Add the create course actions
     createCourseRequest(
       state,
@@ -84,6 +109,10 @@ const courseSlice = createSlice({
 });
 
 export const {
+  addLessonRequest,
+  addLessonSuccess,
+  addLessonFailure,
+  getCourseDetail,
   fetchCoursesRequest,
   fetchCoursesSuccess,
   fetchCoursesFailure,

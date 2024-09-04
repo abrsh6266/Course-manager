@@ -11,6 +11,7 @@ export interface QuizQuestion {
 }
 
 export interface Lesson {
+  _id?: string;
   title: string;
   content: string;
   quiz?: {
