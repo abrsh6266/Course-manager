@@ -65,7 +65,7 @@ const CourseDetails = () => {
                 onClick={() => {
                   dispatch(getLessonDetail(lesson));
                 }}
-                to={`/instructor/courses/${courseId}/lessons/${lesson._id}/quiz`}
+                to={`/instructor/courses/lessons/quiz`}
                 className="text-indigo-500 hover:text-indigo-700 hover:underline mt-4 inline-block"
               >
                 Manage Quiz

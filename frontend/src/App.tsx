@@ -22,7 +22,7 @@ function App() {
           <Navbar />
           <Routes>
             <Route
-              path="/instructor/courses/:courseId/lessons/:lessonId/quiz"
+              path="/instructor/courses/lessons/quiz"
               element={
                 <ProtectedRoute>
                   <ManageQuiz />
