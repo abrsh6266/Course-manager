@@ -3,7 +3,7 @@ import {
   saveUserDataToLocalStorage,
   getUserDataFromLocalStorage,
   clearUserDataFromLocalStorage,
-} from "../../utils/localStorage";
+} from "../../../utils/localStorage";
 
 interface UserState {
   id: string | null;

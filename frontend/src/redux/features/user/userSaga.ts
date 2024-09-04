@@ -18,8 +18,8 @@ import {
   deleteProfileFailure,
   logout,
 } from "./userSlice";
-import successMsg from "../../components/Alerts/SuccessMsg";
-import errorMsg from "../../components/Alerts/ErrorMsg";
+import successMsg from "../../../components/Alerts/SuccessMsg";
+import errorMsg from "../../../components/Alerts/ErrorMsg";
 
 interface LoginResponse {
   id: string;
