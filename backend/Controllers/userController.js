@@ -6,6 +6,19 @@ const generateToken = require("../utils/generateToken");
 const Enrollment = require("../Models/Enrollment");
 const Course = require("../Models/Course");
 
+// fetch users
+exports.fetchUsers = asyncHandler(async (req, res) => {
+  const users = await User.find();
+  res.json(users);
+});
+
+// fetch instructors
+exports.fetchInstructors = asyncHandler(async (req, res) => {
+  const instructors = await User.find({
+    role: "instructor",
+  });
+  res.json(instructors);
+});
 // fetch instructors
 exports.fetchInstructors = asyncHandler(async (req, res) => {
   const instructors = await User.find({
@@ -195,4 +208,31 @@ exports.getQuizResults = asyncHandler(async (req, res) => {
     .populate("lessonId", "title");
 
   res.json(quizResults);
+});
+
+//give role
+exports.giveRole = asyncHandler(async (req, res) => {
+  if (req.user.role !== "admin") {
+    return res.status(403).json({ message: "Access denied." });
+  }
+  const { role } = req.body;
+  const { id } = req.params;
+
+  // Find the user and update
+  const user = await User.findById(id);
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  if (role) user.role = role;
+  await user.save();
+
+  res.status(200).json({
+    status: "success",
+    message: "user role updated successfully",
+    id: user._id,
+    role: user.role,
+    username: user.username,
+    email: user.email,
+  });
 });

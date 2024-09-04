@@ -9,6 +9,8 @@ const {
   takeQuiz,
   getQuizResults,
   fetchInstructors,
+  fetchUsers,
+  giveRole,
 } = require("../Controllers/userController");
 const isLoggedIn = require("../middlewares/isLogged");
 
@@ -23,12 +25,17 @@ router.post("/login", authUser);
 //fetch instructors
 router.get("/instructors", fetchInstructors);
 
+//fetch users
+router.get("/", fetchUsers);
+
 // Get user profile
 router.get("/profile", isLoggedIn, getUserProfile);
 
-
 // Update user profile
 router.put("/profile", isLoggedIn, updateUserProfile);
+
+// give role
+router.put("/:id/role", isLoggedIn, giveRole);
 
 // Enroll user in a course
 router.post("/enroll", isLoggedIn, enrolling);

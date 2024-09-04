@@ -4,7 +4,6 @@ import { RootState } from "../redux/store";
 import {
   fetchProfileRequest,
   updateProfileRequest,
-  deleteProfileRequest,
 } from "../redux/features/user/userSlice";
 import FormInput from "../components/FormInput";
 import SubmitBtn from "../components/SubmitBtn";

@@ -21,6 +21,7 @@ interface UserState {
   loading: boolean;
   error: string | null;
   instructors: User[];
+  users: User[];
 }
 
 const initialState: UserState = getUserDataFromLocalStorage() || {
@@ -32,6 +33,7 @@ const initialState: UserState = getUserDataFromLocalStorage() || {
   loading: false,
   error: null,
   instructors: [],
+  users: [],
 };
 
 const userSlice = createSlice({
@@ -185,6 +187,39 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    // Fetch All Users
+    fetchUsersRequest(state) {
+      state.loading = true;
+      state.error = null;
+    },
+    fetchUsersSuccess(state, action: PayloadAction<User[]>) {
+      state.loading = false;
+      state.users = action.payload;
+    },
+    fetchUsersFailure(state, action: PayloadAction<string>) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    // Update User Role
+    updateUserRoleRequest(
+      state,
+      action: PayloadAction<{ id: string; role: string }>
+    ) {
+      console.log(action.payload);
+      state.loading = true;
+      state.error = null;
+    },
+    updateUserRoleSuccess(state, action: PayloadAction<User>) {
+      state.loading = false;
+      state.users = state.users.map((user) =>
+        user.id === action.payload.id ? action.payload : user
+      );
+    },
+    updateUserRoleFailure(state, action: PayloadAction<string>) {
+      state.loading = false;
+      state.error = action.payload;
+    },
   },
 });
 
@@ -208,6 +243,12 @@ export const {
   deleteProfileRequest,
   deleteProfileSuccess,
   deleteProfileFailure,
+  updateUserRoleRequest,
+  updateUserRoleSuccess,
+  updateUserRoleFailure,
+  fetchUsersRequest,
+  fetchUsersSuccess,
+  fetchUsersFailure,
 } = userSlice.actions;
 
 export default userSlice.reducer;

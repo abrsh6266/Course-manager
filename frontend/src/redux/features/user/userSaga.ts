@@ -20,6 +20,12 @@ import {
   fetchInstructorsSuccess,
   fetchInstructorsFailure,
   fetchInstructorsRequest,
+  fetchUsersSuccess,
+  fetchUsersFailure,
+  updateUserRoleRequest,
+  updateUserRoleSuccess,
+  updateUserRoleFailure,
+  fetchUsersRequest,
 } from "./userSlice";
 import successMsg from "../../../components/Alerts/SuccessMsg";
 import errorMsg from "../../../components/Alerts/ErrorMsg";
@@ -163,7 +169,51 @@ function* handleDeleteProfile() {
   }
 }
 
+function* handleFetchUsers() {
+  try {
+    const response: AxiosResponse<User[]> = yield call(
+      axios.get,
+      "http://localhost:4000/api/users"
+    );
+    yield put(fetchUsersSuccess(response.data));
+  } catch (error: any) {
+    yield put(
+      fetchUsersFailure(
+        error.response?.data?.message || "Failed to fetch users"
+      )
+    );
+  }
+}
+
+function* handleUpdateUserRole(
+  action: ReturnType<typeof updateUserRoleRequest>
+) {
+  try {
+    const token: string = yield select((state: any) => state.user.token);
+    const { id, role } = action.payload;
+    const response: AxiosResponse<User> = yield call(
+      axios.put,
+      `http://localhost:4000/api/users/${id}/role`,
+      { role },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    successMsg("Role successfully updated");
+    yield put(updateUserRoleSuccess(response.data));
+  } catch (error: any) {
+    errorMsg(error.response?.data?.message || "updating role failed");
+    yield put(
+      updateUserRoleFailure(
+        error.response?.data?.message || "Failed to update user role"
+      )
+    );
+  }
+}
+
 export default function* userSaga() {
+  yield takeLatest(fetchUsersRequest.type, handleFetchUsers);
+  yield takeLatest(updateUserRoleRequest.type, handleUpdateUserRole);
   yield takeLatest(loginRequest.type, handleLogin);
   yield takeLatest(registerRequest.type, handleRegister);
   yield takeLatest(fetchProfileRequest.type, handleFetchProfile);

@@ -9,6 +9,7 @@ import CreateCourse from "./components/CreateCourse";
 import Overview from "./pages/dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Profile from "./pages/ProfilePage";
+import AdminUsers from "./pages/UserManagmentPage";
 
 function App() {
   return (
@@ -22,6 +23,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Profile />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/users"
+              element={
+                <ProtectedRoute>
+                  <AdminUsers />
                 </ProtectedRoute>
               }
             />

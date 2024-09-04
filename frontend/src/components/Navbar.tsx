@@ -32,6 +32,7 @@ const Navbar = () => {
       label: "Manage Courses",
       href: "/courses",
     },
+    role === "admin" && { id: 5, label: "Manage Users", href: "/users" },
   ].filter(Boolean);
 
   useEffect(() => {}, [token, username, role]);
@@ -111,10 +112,7 @@ const Navbar = () => {
         </div>
         {token ? (
           <div className="navbar-end space-x-8 relative">
-            <div
-              className="avatar cursor-pointer"
-              onClick={toggleDropdown}
-            >
+            <div className="avatar cursor-pointer" onClick={toggleDropdown}>
               <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
                 <div className="bg-white text-3xl rounded-full flex items-center justify-center">
                   {username?.charAt(0).toUpperCase()}
