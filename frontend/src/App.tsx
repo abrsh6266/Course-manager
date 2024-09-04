@@ -61,9 +61,30 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            <Route element={<Overview />} path="/" />
-            <Route element={<AdminCourses />} path="/courses" />
-            <Route element={<CreateCourse />} path="/create-course" />
+            <Route
+              element={
+                <ProtectedRoute>
+                  <Overview />
+                </ProtectedRoute>
+              }
+              path="/"
+            />
+            <Route
+              element={
+                <ProtectedRoute>
+                  <AdminCourses />
+                </ProtectedRoute>
+              }
+              path="/courses"
+            />
+            <Route
+              element={
+                <ProtectedRoute>
+                  <CreateCourse />
+                </ProtectedRoute>
+              }
+              path="/create-course"
+            />
             <Route element={<Login />} path="/login" />
             <Route element={<Register />} path="/register" />
           </Routes>
