@@ -104,7 +104,6 @@ const userSlice = createSlice({
       state.username = null;
       state.token = null;
       clearUserDataFromLocalStorage();
-      location.reload();
     },
 
     // Fetch Profile Actions
