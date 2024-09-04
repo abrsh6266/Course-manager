@@ -84,6 +84,7 @@ const courseSlice = createSlice({
     addLessonSuccess(state, action: PayloadAction<Lesson>) {
       state.course?.lessons.push(action.payload);
       state.loading = false;
+      state.lesson = null;
     },
     addLessonFailure(state, action: PayloadAction<string>) {
       state.loading = false;
@@ -105,9 +106,7 @@ const courseSlice = createSlice({
     addQuizSuccess(state, action: PayloadAction<Lesson>) {
       state.lesson = action.payload;
       state.loading = false;
-      setTimeout(() => {
-        history.go(0);
-      }, 3000);
+      state.lesson = null;
     },
     addQuizFailure(state, action: PayloadAction<string>) {
       state.loading = false;
@@ -130,9 +129,7 @@ const courseSlice = createSlice({
     updateQuizSuccess(state, action: PayloadAction<Lesson>) {
       state.lesson = action.payload;
       state.loading = false;
-      setTimeout(() => {
-        history.go(0);
-      }, 3000);
+      state.lesson = null;
     },
     updateQuizFailure(state, action: PayloadAction<string>) {
       state.loading = false;
@@ -154,9 +151,6 @@ const courseSlice = createSlice({
     deleteQuizSuccess(state, action: PayloadAction<Lesson>) {
       state.lesson = action.payload;
       state.loading = false;
-      setTimeout(() => {
-        history.go(0);
-      }, 3000);
     },
     deleteQuizFailure(state, action: PayloadAction<string>) {
       state.loading = false;
