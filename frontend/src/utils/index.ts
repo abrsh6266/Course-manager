@@ -1,15 +1,34 @@
-export interface Music {
-  id: string;
-  title: string;
-  artist: string;
-  album: string;
-  genre: string;
-  file: string;
-  userId: string;
+// src/utils/index.ts
+
+export interface QuizOption {
+  optionText: string;
+  isCorrect: boolean;
 }
 
-export interface FetchMusicsResponse {
-  musics: Music[];
-  currentPage: number;
+export interface QuizQuestion {
+  questionText: string;
+  options: QuizOption[];
+}
+
+export interface Lesson {
+  title: string;
+  content: string;
+  quiz?: {
+    questions: QuizQuestion[];
+  };
+}
+
+export interface Course {
+  _id: string;
+  title: string;
+  description: string;
+  instructor: string;
+  lessons: Lesson[];
+}
+
+export interface FetchCoursesResponse {
+  courses: Course[];
+  totalCourses: number;
   totalPages: number;
+  currentPage: number;
 }

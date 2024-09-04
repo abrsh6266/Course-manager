@@ -14,7 +14,7 @@ const Login = () => {
   );
 
   const [formData, setFormData] = useState({
-    email: "abrsh6266@gmail.com",
+    email: "admin@gmail.com",
     password: "123456",
   });
   const [errors, setErrors] = useState({ email: "", password: "" });
