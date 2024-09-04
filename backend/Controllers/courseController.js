@@ -68,9 +68,10 @@ exports.addLesson = asyncHandler(async (req, res) => {
   }
 
   course.lessons.push({ title, content });
-
   await course.save();
-  res.status(200).json(course);
+  const lesson = course.lessons.find((lessons) => lessons.title === title);
+  console.log(lesson);
+  res.status(200).json(lesson);
 });
 
 // Update a lesson in a course
