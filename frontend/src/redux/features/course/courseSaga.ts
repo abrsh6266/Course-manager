@@ -1,4 +1,3 @@
-// src/redux/features/course/courseSaga.ts
 import { call, put, select, takeLatest } from "redux-saga/effects";
 import axios, { AxiosResponse } from "axios";
 import {
@@ -17,6 +16,15 @@ import {
   addLessonSuccess,
   addLessonFailure,
   addLessonRequest,
+  addQuizRequest,
+  addQuizSuccess,
+  addQuizFailure,
+  updateQuizRequest,
+  updateQuizSuccess,
+  updateQuizFailure,
+  deleteQuizRequest,
+  deleteQuizSuccess,
+  deleteQuizFailure,
 } from "./courseSlice";
 import { Course, Lesson } from "../../../utils";
 import successMsg from "../../../components/Alerts/SuccessMsg";
@@ -38,7 +46,8 @@ function* handleFetchCourses() {
     );
   }
 }
-//hadle fetching assigned courses for instructor
+
+// Handle fetching assigned courses for instructor
 function* handleFetchInstructorCourses() {
   try {
     const token: string = yield select((state: any) => state.user.token);
@@ -58,6 +67,7 @@ function* handleFetchInstructorCourses() {
     );
   }
 }
+
 // Create Course Saga
 function* handleCreateCourse(action: ReturnType<typeof createCourseRequest>) {
   try {
@@ -75,7 +85,7 @@ function* handleCreateCourse(action: ReturnType<typeof createCourseRequest>) {
 
     yield put(createCourseSuccess(response.data));
   } catch (error: any) {
-    errorMsg(error.response?.data?.message || "course creation failed");
+    errorMsg(error.response?.data?.message || "Course creation failed");
     yield put(
       createCourseFailure(
         error.response?.data?.message || "Failed to create course"
@@ -98,6 +108,7 @@ function* handleDeleteCourse(action: ReturnType<typeof deleteCourseRequest>) {
     );
   }
 }
+
 // Add Lesson Saga
 function* handleAddLesson(action: ReturnType<typeof addLessonRequest>) {
   try {
@@ -121,6 +132,82 @@ function* handleAddLesson(action: ReturnType<typeof addLessonRequest>) {
     );
   }
 }
+
+// Add Quiz Saga
+function* handleAddQuiz(action: ReturnType<typeof addQuizRequest>) {
+  try {
+    const token: string = yield select((state: any) => state.user.token);
+    const { courseId, lessonId, questions } = action.payload;
+    const response: AxiosResponse<Lesson> = yield call(
+      axios.post,
+      `http://localhost:4000/api/courses/${courseId}/lessons/${lessonId}/quiz`,
+      { questions },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    successMsg("Quiz successfully added");
+
+    yield put(addQuizSuccess(response.data));
+  } catch (error: any) {
+    errorMsg(error.response?.data?.message || "Failed to add quiz");
+    yield put(
+      addQuizFailure(error.response?.data?.message || "Failed to add quiz")
+    );
+  }
+}
+
+// Update Quiz Saga
+function* handleUpdateQuiz(action: ReturnType<typeof updateQuizRequest>) {
+  try {
+    const token: string = yield select((state: any) => state.user.token);
+    const { courseId, lessonId, questions } = action.payload;
+    const response: AxiosResponse<Lesson> = yield call(
+      axios.put,
+      `http://localhost:4000/api/courses/${courseId}/lessons/${lessonId}/quiz`,
+      { questions },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    successMsg("Quiz successfully updated");
+
+    yield put(updateQuizSuccess(response.data));
+  } catch (error: any) {
+    errorMsg(error.response?.data?.message || "Failed to update quiz");
+    yield put(
+      updateQuizFailure(
+        error.response?.data?.message || "Failed to update quiz"
+      )
+    );
+  }
+}
+
+// Delete Quiz Saga
+function* handleDeleteQuiz(action: ReturnType<typeof deleteQuizRequest>) {
+  try {
+    const token: string = yield select((state: any) => state.user.token);
+    const { courseId, lessonId } = action.payload;
+    const response: AxiosResponse<Lesson> = yield call(
+      axios.delete,
+      `http://localhost:4000/api/courses/${courseId}/lessons/${lessonId}/quiz`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    successMsg("Quiz successfully deleted");
+
+    yield put(deleteQuizSuccess(response.data));
+  } catch (error: any) {
+    errorMsg(error.response?.data?.message || "Failed to delete quiz");
+    yield put(
+      deleteQuizFailure(
+        error.response?.data?.message || "Failed to delete quiz"
+      )
+    );
+  }
+}
+
 export default function* courseSaga() {
   yield takeLatest(
     fetchInstructorCoursesRequest.type,
@@ -130,4 +217,7 @@ export default function* courseSaga() {
   yield takeLatest(deleteCourseRequest.type, handleDeleteCourse);
   yield takeLatest(createCourseRequest.type, handleCreateCourse);
   yield takeLatest(addLessonRequest.type, handleAddLesson);
+  yield takeLatest(addQuizRequest.type, handleAddQuiz);
+  yield takeLatest(updateQuizRequest.type, handleUpdateQuiz);
+  yield takeLatest(deleteQuizRequest.type, handleDeleteQuiz);
 }

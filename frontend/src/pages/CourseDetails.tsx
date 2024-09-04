@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { RootState } from "../redux/store";
-import { addLessonRequest } from "../redux/features/course/courseSlice";
+import {
+  addLessonRequest,
+  getLessonDetail,
+} from "../redux/features/course/courseSlice";
 import { Lesson } from "../utils";
 
 const CourseDetails = () => {
@@ -36,6 +39,9 @@ const CourseDetails = () => {
             <h3 className="text-xl font-bold">{lesson.title}</h3>
             <p className="text-gray-700">{lesson.content}</p>
             <Link
+              onClick={() => {
+                dispatch(getLessonDetail(lesson));
+              }}
               to={`/instructor/courses/${courseId}/lessons/${lesson._id}/quiz`}
               className="text-blue-500 hover:underline mt-2 inline-block"
             >

@@ -186,7 +186,7 @@ exports.createQuiz = asyncHandler(async (req, res) => {
   lesson.quiz = { questions };
 
   await course.save();
-  res.status(200).json(course);
+  res.status(200).json(lesson);
 });
 
 // Update a quiz for a specific lesson
@@ -218,7 +218,7 @@ exports.updateQuiz = asyncHandler(async (req, res) => {
   lesson.quiz.questions = questions;
 
   await course.save();
-  res.status(200).json(course);
+  res.status(200).json(lesson);
 });
 
 // Delete a quiz for a specific lesson
@@ -249,7 +249,7 @@ exports.deleteQuiz = asyncHandler(async (req, res) => {
   lesson.quiz = undefined;
 
   await course.save();
-  res.status(200).json(course);
+  res.status(200).json(lesson);
 });
 
 // Get courses by instructor ID

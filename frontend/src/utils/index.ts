@@ -9,7 +9,9 @@ export interface QuizQuestion {
   questionText: string;
   options: QuizOption[];
 }
-
+export interface Quiz {
+  questions: QuizQuestion[];
+}
 export interface Lesson {
   _id?: string;
   title: string;

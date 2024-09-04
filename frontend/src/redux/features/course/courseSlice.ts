@@ -1,11 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Course, Lesson } from "../../../utils";
+import { Course, Lesson, QuizQuestion } from "../../../utils";
 
 interface CourseState {
   courses: Course[];
   loading: boolean;
   error: string | null;
   course: Course | null;
+  lesson: Lesson | null;
 }
 
 const initialState: CourseState = {
@@ -13,12 +14,17 @@ const initialState: CourseState = {
   loading: false,
   error: null,
   course: null,
+  lesson: null,
 };
 
 const courseSlice = createSlice({
   name: "course",
   initialState,
   reducers: {
+    getLessonDetail(state, action: PayloadAction<Lesson>) {
+      state.lesson = action.payload;
+      state.loading = false;
+    },
     getCourseDetail(state, action: PayloadAction<Course>) {
       state.course = action.payload;
       state.loading = false;
@@ -66,7 +72,7 @@ const courseSlice = createSlice({
       state.error = action.payload;
     },
 
-    // Add the create course actions
+    // Add the lesson actions
     addLessonRequest(
       state,
       action: PayloadAction<{ courseId: string; lessonData: Lesson }>
@@ -83,7 +89,70 @@ const courseSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    //add quiz
+    addQuizRequest(
+      state,
+      action: PayloadAction<{
+        courseId?: string;
+        lessonId?: string;
+        questions: QuizQuestion[];
+      }>
+    ) {
+      console.log(action.payload);
+      state.loading = true;
+      state.error = null;
+    },
+    addQuizSuccess(state, action: PayloadAction<Lesson>) {
+      state.lesson = action.payload;
+      state.loading = false;
+    },
+    addQuizFailure(state, action: PayloadAction<string>) {
+      state.loading = false;
+      state.error = action.payload;
+    },
 
+    //update quiz
+    updateQuizRequest(
+      state,
+      action: PayloadAction<{
+        courseId?: string;
+        lessonId?: string;
+        questions: QuizQuestion[];
+      }>
+    ) {
+      console.log(action.payload);
+      state.loading = true;
+      state.error = null;
+    },
+    updateQuizSuccess(state, action: PayloadAction<Lesson>) {
+      state.lesson = action.payload;
+      state.loading = false;
+    },
+    updateQuizFailure(state, action: PayloadAction<string>) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    //delete quiz
+    deleteQuizRequest(
+      state,
+      action: PayloadAction<{
+        courseId?: string;
+        lessonId?: string;
+      }>
+    ) {
+      console.log(action.payload);
+      state.loading = true;
+      state.error = null;
+    },
+    deleteQuizSuccess(state, action: PayloadAction<Lesson>) {
+      state.lesson = action.payload;
+      state.loading = false;
+    },
+    deleteQuizFailure(state, action: PayloadAction<string>) {
+      state.loading = false;
+      state.error = action.payload;
+    },
     // Add the create course actions
     createCourseRequest(
       state,
@@ -125,6 +194,16 @@ export const {
   createCourseRequest,
   createCourseSuccess,
   createCourseFailure,
+  getLessonDetail,
+  addQuizFailure,
+  addQuizRequest,
+  addQuizSuccess,
+  updateQuizFailure,
+  updateQuizRequest,
+  updateQuizSuccess,
+  deleteQuizFailure,
+  deleteQuizRequest,
+  deleteQuizSuccess,
 } = courseSlice.actions;
 
 export default courseSlice.reducer;

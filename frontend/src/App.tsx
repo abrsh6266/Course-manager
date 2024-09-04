@@ -12,6 +12,7 @@ import Profile from "./pages/ProfilePage";
 import AdminUsers from "./pages/UserManagmentPage";
 import InstructorCourses from "./pages/InstructorCoursePage";
 import CourseDetails from "./pages/CourseDetails";
+import ManageQuiz from "./pages/MangeQuiz";
 
 function App() {
   return (
@@ -20,6 +21,14 @@ function App() {
         <div className="App">
           <Navbar />
           <Routes>
+            <Route
+              path="/instructor/courses/:courseId/lessons/:lessonId/quiz"
+              element={
+                <ProtectedRoute>
+                  <ManageQuiz />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/assigned-courses"
               element={
@@ -32,7 +41,7 @@ function App() {
               path="/instructor/courses/:courseId"
               element={
                 <ProtectedRoute>
-                  <CourseDetails/>
+                  <CourseDetails />
                 </ProtectedRoute>
               }
             />
