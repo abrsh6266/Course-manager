@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import {
@@ -25,7 +25,7 @@ const AdminCourses = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <h1 className="text-4xl font-bold text-center mb-8">Manage Courses</h1>
-      <Link className="btn m-4" to={"/create-course"}>
+      <Link className="btn m-4 text-2xl btn-primary" to={"/create-course"}>
         Create Course
       </Link>
       {loading && (

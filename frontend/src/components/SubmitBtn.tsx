@@ -5,7 +5,7 @@ const SubmitBtn = ({
 }: {
   text: string;
   disabled: boolean;
-  loading: boolean;
+  loading?: boolean;
 }) => {
   return (
     <button

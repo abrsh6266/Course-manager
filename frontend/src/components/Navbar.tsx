@@ -1,30 +1,36 @@
 "use client";
 import { FaBarsStaggered } from "react-icons/fa6";
-import { useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { RootState } from "../redux/store";
+import { logout } from "../redux/features/user/userSlice";
 
 const Navbar = () => {
+  const dispatch = useDispatch();
   const { token, username, role } = useSelector(
     (state: RootState) => state.user
   );
   const location = useLocation();
   const currentPath = location.pathname;
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
 
   // Navigation links based on roles
   const navLinks = [
-    { id: 1, label: "Home", href: "/" },
     role === "user" && { id: 2, label: "My Courses", href: "/my-courses" },
-    role === "instructor" && {
+    role === "admin" && { id: 4, label: "Admin Dashboard", href: "/" },
+    (role === "instructor" || role === "admin") && {
       id: 3,
       label: "Manage Courses",
-      href: "/manage-courses",
-    },
-    role === "admin" && {
-      id: 4,
-      label: "Admin Dashboard",
-      href: "/admin-dashboard",
+      href: "/courses",
     },
   ].filter(Boolean);
 
@@ -34,7 +40,6 @@ const Navbar = () => {
     <nav className="navbar bg-base-300 shadow-lg mb-8">
       <div className="navbar align-element mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="navbar-start">
-          {/* Title */}
           <Link
             to="/"
             className="hidden btn mask mask-hexagon-2 lg:flex h-full rounded-full text-3xl items-center"
@@ -105,16 +110,38 @@ const Navbar = () => {
           </ul>
         </div>
         {token ? (
-          <div className="navbar-end space-x-8">
-            <Link to="/profile">
-              <div className="avatar">
-                <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                  <div className="bg-white text-3xl rounded-full flex items-center justify-center">
-                    {username?.charAt(0).toUpperCase()}
-                  </div>
+          <div className="navbar-end space-x-8 relative">
+            <div
+              className="avatar cursor-pointer"
+              onClick={toggleDropdown}
+            >
+              <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                <div className="bg-white text-3xl rounded-full flex items-center justify-center">
+                  {username?.charAt(0).toUpperCase()}
                 </div>
               </div>
-            </Link>
+            </div>
+            {dropdownOpen && (
+              <ul className="absolute right-0 mt-32 w-48 bg-white shadow-lg rounded-lg py-2 z-50">
+                <li>
+                  <Link
+                    to="/profile"
+                    className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+                    onClick={() => setDropdownOpen(false)}
+                  >
+                    My Profile
+                  </Link>
+                </li>
+                <li>
+                  <button
+                    className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </button>
+                </li>
+              </ul>
+            )}
           </div>
         ) : (
           <div className="navbar-end space-x-8">
