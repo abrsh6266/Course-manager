@@ -24,7 +24,7 @@ router.get("/", getCourses);
 router.get("/instructor/:instructorId", isLoggedIn, getCoursesByInstructor);
 
 //statistics
-router.get('/statistics', isLoggedIn, getStatistics);
+router.get("/statistics", getStatistics);
 
 // Create a new course
 router.post("/", isLoggedIn, createCourse);

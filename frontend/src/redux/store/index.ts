@@ -3,6 +3,7 @@ import createSagaMiddleware from "redux-saga";
 import rootSaga from "./rootSaga";
 import userReducer from "../features/user/userSlice";
 import coursesReducer from "../features/course/courseSlice";
+import statisticReducer from "../features/statistics/statisticsSlice";
 
 // Create the Saga middleware
 const sagaMiddleware = createSagaMiddleware();
@@ -12,6 +13,7 @@ const store = configureStore({
   reducer: {
     user: userReducer,
     course: coursesReducer,
+    statistics: statisticReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(sagaMiddleware),
