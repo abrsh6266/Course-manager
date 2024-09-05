@@ -7,6 +7,7 @@ import {
   getLessonDetail,
 } from "../redux/features/course/courseSlice";
 import { Lesson } from "../utils";
+import { getQuizRequest } from "../redux/features/quiz/quizSlice";
 
 const CourseDetails = () => {
   const { courseId } = useParams();
@@ -79,8 +80,11 @@ const CourseDetails = () => {
                 </Link>
               ) : (
                 <Link
-                  onClick={() => dispatch(getLessonDetail(lesson))}
-                  to={`/user/courses/${courseId}/lessons/${lesson._id}/take-quiz`}
+                  onClick={() => {
+                    dispatch(getQuizRequest(lesson.quiz || null));
+                    dispatch(getLessonDetail(lesson));
+                  }}
+                  to={`/user/courses/lessons/take-quiz`}
                   className="text-green-500 hover:text-green-700 hover:underline mt-4 inline-block"
                 >
                   Take Quiz
@@ -91,7 +95,6 @@ const CourseDetails = () => {
         </ul>
       </div>
 
-      {/* Only allow instructors to add new lessons */}
       {role === "instructor" && (
         <div className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-3xl font-semibold text-gray-800 mb-6">

@@ -35,7 +35,13 @@ const Navbar = () => {
       label: "AvailableCourses",
       href: "/available-courses",
     },
+
     role === "user" && { id: 2, label: "My Courses", href: "/my-courses" },
+    role === "user" && {
+      id: 8,
+      label: "Quiz Results",
+      href: "/taken-quiz",
+    },
     role === "admin" && { id: 4, label: "Admin Dashboard", href: "/" },
     role === "admin" && {
       id: 3,

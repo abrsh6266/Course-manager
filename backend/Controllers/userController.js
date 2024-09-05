@@ -5,6 +5,7 @@ const User = require("../Models/User");
 const generateToken = require("../utils/generateToken");
 const Enrollment = require("../Models/Enrollment");
 const Course = require("../Models/Course");
+const QuizResult = require("../Models/QuizResult");
 
 // fetch users
 exports.fetchUsers = asyncHandler(async (req, res) => {
@@ -158,7 +159,6 @@ exports.takeQuiz = asyncHandler(async (req, res) => {
     return res.status(403).json({ message: "Access denied." });
   }
   const { courseId, lessonId, answers } = req.body;
-
   const course = await Course.findById(courseId);
   if (!course) {
     return res.status(404).json({ message: "Course not found." });
@@ -208,11 +208,25 @@ exports.getQuizResults = asyncHandler(async (req, res) => {
   if (req.user.role !== "user") {
     return res.status(403).json({ message: "Access denied." });
   }
-  const quizResults = await QuizResult.find({ userId: req.user._id })
-    .populate("courseId", "title")
-    .populate("lessonId", "title");
 
-  res.json(quizResults);
+  const quizResults = await QuizResult.find({ userId: req.user._id }).populate(
+    "courseId",
+    "title"
+  );
+
+  const populatedQuizResults = await Promise.all(
+    quizResults.map(async (result) => {
+      const course = await Course.findById(result.courseId);
+      const lesson = course.lessons.id(result.lessonId);
+
+      return {
+        ...result.toObject(),
+        lessonTitle: lesson ? lesson.title : "Lesson not found",
+      };
+    })
+  );
+
+  res.json(populatedQuizResults);
 });
 
 //give role

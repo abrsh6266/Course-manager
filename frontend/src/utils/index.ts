@@ -20,6 +20,13 @@ export interface Lesson {
     questions: QuizQuestion[];
   };
 }
+export interface QuizResult {
+  _id: string;
+  courseId: { title: string };
+  lessonId: { title: string };
+  score: number;
+  feedback: string;
+}
 
 export interface Course {
   _id: string;

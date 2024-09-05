@@ -30,7 +30,6 @@ const Overview = () => {
     enrollments: index + 1,
   }));
 
-  // Handle navigation based on user role
   const role = useSelector((state: RootState) => state.user.role);
   const navigate = useNavigate();
 

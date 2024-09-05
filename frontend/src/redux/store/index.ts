@@ -4,6 +4,7 @@ import rootSaga from "./rootSaga";
 import userReducer from "../features/user/userSlice";
 import coursesReducer from "../features/course/courseSlice";
 import statisticReducer from "../features/statistics/statisticsSlice";
+import quizReducer from "../features/quiz/quizSlice";
 
 // Create the Saga middleware
 const sagaMiddleware = createSagaMiddleware();
@@ -14,6 +15,7 @@ const store = configureStore({
     user: userReducer,
     course: coursesReducer,
     statistics: statisticReducer,
+    quiz: quizReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(sagaMiddleware),

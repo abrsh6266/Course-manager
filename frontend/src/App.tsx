@@ -15,6 +15,8 @@ import CourseDetails from "./pages/CourseDetails";
 import ManageQuiz from "./pages/MangeQuiz";
 import AvailableCourses from "./pages/AvailableCourses";
 import EnrolledCourses from "./pages/EnrolledCoursesPage";
+import Quiz from "./pages/TakeQuizPage";
+import QuizResults from "./pages/TakenQuizes";
 
 function App() {
   return (
@@ -40,10 +42,26 @@ function App() {
               }
             />
             <Route
+              path="/user/courses/lessons/take-quiz"
+              element={
+                <ProtectedRoute>
+                  <Quiz />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/my-courses"
               element={
                 <ProtectedRoute>
                   <EnrolledCourses />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/taken-quiz"
+              element={
+                <ProtectedRoute>
+                  <QuizResults />
                 </ProtectedRoute>
               }
             />
