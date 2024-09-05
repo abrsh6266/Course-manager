@@ -75,7 +75,6 @@ const Login = () => {
       >
         <h4 className="text-center text-3xl font-bold">Login</h4>
 
-        {/* Email Input */}
         <FormInput
           type="email"
           label="email"
@@ -87,7 +86,6 @@ const Login = () => {
           <p className="text-red-500 text-sm mt-1">{errors.email}</p>
         )}
 
-        {/* Password Input */}
         <FormInput
           type="password"
           label="password"
@@ -99,15 +97,12 @@ const Login = () => {
           <p className="text-red-500 text-sm mt-1">{errors.password}</p>
         )}
 
-        {/* Error from API */}
         {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
 
-        {/* Submit Button */}
         <div className="mt-4">
           <SubmitBtn text="Login" disabled={!isFormValid} loading={loading} />
         </div>
 
-        {/* Register Link */}
         <p className="text-center">
           Not a member yet?{" "}
           <Link

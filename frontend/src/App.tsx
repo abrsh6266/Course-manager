@@ -13,6 +13,8 @@ import AdminUsers from "./pages/UserManagmentPage";
 import InstructorCourses from "./pages/InstructorCoursePage";
 import CourseDetails from "./pages/CourseDetails";
 import ManageQuiz from "./pages/MangeQuiz";
+import AvailableCourses from "./pages/AvailableCourses";
+import EnrolledCourses from "./pages/EnrolledCoursesPage";
 
 function App() {
   return (
@@ -26,6 +28,22 @@ function App() {
               element={
                 <ProtectedRoute>
                   <ManageQuiz />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/available-courses"
+              element={
+                <ProtectedRoute>
+                  <AvailableCourses />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/my-courses"
+              element={
+                <ProtectedRoute>
+                  <EnrolledCourses />
                 </ProtectedRoute>
               }
             />

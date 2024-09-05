@@ -122,16 +122,17 @@ exports.enrolling = asyncHandler(async (req, res) => {
   if (req.user.role !== "user") {
     return res.status(403).json({ message: "Access denied." });
   }
-  const enrolled = Enrollment.find({
+  const { courseId } = req.body.courseId;
+  const enrolled = await Enrollment.findOne({
     userId: req.user._id,
-    courseId: params.body.courseId,
+    courseId: courseId,
   });
   if (enrolled) {
     throw new Error("User already registered for this course");
   }
-  const userEnroll = Enrollment.create({
+  const userEnroll = await Enrollment.create({
     userId: req.user._id,
-    courseId: params.body.courseId,
+    courseId: courseId,
   });
   res.json({
     message: "user Success Enrolled.",
@@ -142,9 +143,13 @@ exports.enrolledCourses = asyncHandler(async (req, res) => {
   if (req.user.role !== "user") {
     return res.status(403).json({ message: "Access denied." });
   }
-  const courses = Enrollment.find({
-    userId: req.user._id,
-  }).populate("course", "title description");
+  const enrollments = await Enrollment.find({ userId: req.user._id }).select(
+    "courseId"
+  );
+  const courseIds = enrollments.map((enrollment) => enrollment.courseId);
+  const courses = await Course.find({ _id: { $in: courseIds } });
+
+  res.status(200).json(courses);
 });
 
 // Taking a quiz

@@ -156,6 +156,37 @@ const courseSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    //enroll courses
+    enrollCourseRequest(
+      state,
+      action: PayloadAction<{
+        courseId?: string;
+      }>
+    ) {
+      console.log(action.payload);
+      state.loading = true;
+      state.error = null;
+    },
+    enrollCourseSuccess(state) {
+      state.loading = false;
+    },
+    enrollCourseFailure(state, action: PayloadAction<string>) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    //get enrolled courses
+    fetchEnrolledCoursesRequest(state) {
+      state.loading = true;
+      state.error = null;
+    },
+    fetchEnrolledCoursesSuccess(state, action: PayloadAction<Course[]>) {
+      state.courses = action.payload;
+      state.loading = false;
+    },
+    fetchEnrolledCoursesFailure(state, action: PayloadAction<string>) {
+      state.loading = false;
+      state.error = action.payload;
+    },
     // Add the create course actions
     createCourseRequest(
       state,
@@ -207,6 +238,12 @@ export const {
   deleteQuizFailure,
   deleteQuizRequest,
   deleteQuizSuccess,
+  enrollCourseFailure,
+  enrollCourseRequest,
+  enrollCourseSuccess,
+  fetchEnrolledCoursesFailure,
+  fetchEnrolledCoursesRequest,
+  fetchEnrolledCoursesSuccess,
 } = courseSlice.actions;
 
 export default courseSlice.reducer;
