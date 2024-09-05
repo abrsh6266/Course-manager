@@ -54,7 +54,7 @@ function* handleFetchInstructors() {
   try {
     const response: AxiosResponse<User[]> = yield call(
       axios.get,
-      "https://courses-api-ruby.vercel.app/api/users/instructors"
+      "https://course-api-liard.vercel.app/api/users/instructors"
     );
     console.log(response.data);
     yield put(fetchInstructorsSuccess(response.data));
@@ -71,7 +71,7 @@ function* handleLogin(action: ReturnType<typeof loginRequest>) {
   try {
     const response: AxiosResponse<LoginResponse> = yield call(
       axios.post,
-      "https://courses-api-ruby.vercel.app/api/users/login",
+      "https://course-api-liard.vercel.app/api/users/login",
       action.payload
     );
     console.log(response.data);
@@ -87,7 +87,7 @@ function* handleRegister(action: ReturnType<typeof registerRequest>) {
   try {
     const response: AxiosResponse<RegisterResponse> = yield call(
       axios.post,
-      "https://courses-api-ruby.vercel.app/api/users/register",
+      "https://course-api-liard.vercel.app/api/users/register",
       action.payload
     );
     successMsg("User successfully registered");
@@ -105,7 +105,7 @@ function* handleFetchProfile() {
     const token: string = yield select((state: any) => state.user.token);
     const response: AxiosResponse<LoginResponse> = yield call(
       axios.get,
-      "https://courses-api-ruby.vercel.app/api/users/profile",
+      "https://course-api-liard.vercel.app/api/users/profile",
       {
         headers: { Authorization: `Bearer ${token}` },
       }
@@ -132,7 +132,7 @@ function* handleUpdateProfile(action: ReturnType<typeof updateProfileRequest>) {
     const token: string = yield select((state: any) => state.user.token);
     const response: AxiosResponse<LoginResponse> = yield call(
       axios.put,
-      "https://courses-api-ruby.vercel.app/api/users/profile",
+      "https://course-api-liard.vercel.app/api/users/profile",
       action.payload,
       {
         headers: { Authorization: `Bearer ${token}` },
@@ -153,7 +153,7 @@ function* handleUpdateProfile(action: ReturnType<typeof updateProfileRequest>) {
 function* handleDeleteProfile() {
   try {
     const token: string = yield select((state: any) => state.user.token);
-    yield call(axios.delete, "https://courses-api-ruby.vercel.app/api/users/profile", {
+    yield call(axios.delete, "https://course-api-liard.vercel.app/api/users/profile", {
       headers: { Authorization: `Bearer ${token}` },
     });
     successMsg("Profile successfully deleted");
@@ -173,7 +173,7 @@ function* handleFetchUsers() {
   try {
     const response: AxiosResponse<User[]> = yield call(
       axios.get,
-      "https://courses-api-ruby.vercel.app/api/users"
+      "https://course-api-liard.vercel.app/api/users"
     );
     yield put(fetchUsersSuccess(response.data));
   } catch (error: any) {
@@ -193,7 +193,7 @@ function* handleUpdateUserRole(
     const { id, role } = action.payload;
     const response: AxiosResponse<User> = yield call(
       axios.put,
-      `https://courses-api-ruby.vercel.app/api/users/${id}/role`,
+      `https://course-api-liard.vercel.app/api/users/${id}/role`,
       { role },
       {
         headers: { Authorization: `Bearer ${token}` },
