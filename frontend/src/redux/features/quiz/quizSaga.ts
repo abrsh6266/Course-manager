@@ -23,7 +23,7 @@ function* handleTakeQuiz(action: ReturnType<typeof takeQuizRequest>) {
     const { courseId, lessonId, answers } = action.payload;
     const response: AxiosResponse<QuizResponse> = yield call(
       axios.post,
-      `http://localhost:4000/api/users/quiz`,
+      `https://courses-api-ruby.vercel.app/api/users/quiz`,
       { courseId, lessonId, answers },
       {
         headers: { Authorization: `Bearer ${token}` },
@@ -44,7 +44,7 @@ function* handleFetchQuizResults() {
     const token: string = yield select((state: any) => state.user.token);
     const response: AxiosResponse<QuizResult[]> = yield call(
       axios.get,
-      "http://localhost:4000/api/users/quiz-results",
+      "https://courses-api-ruby.vercel.app/api/users/quiz-results",
       {
         headers: { Authorization: `Bearer ${token}` },
       }
